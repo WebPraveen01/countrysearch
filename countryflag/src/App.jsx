@@ -37,17 +37,13 @@ function App() {
     <>
     <h1>Country wise flag and name</h1>
     <input type='text' value={search} onChange={(event) => setSearch(event.target.value)} placeholder='Enter the country name'/>
-      <div className='countryCard' style={containerStyle}>
-        {filteredCountries.length > 0 ? (
-          filteredCountries.map((country) => (
-            <div className='country-card' key={country.common}>
-              <img className='country-flag' src={country.png} alt={`${country.common} flag`} />
-              <h2>{country.common}</h2>
-            </div>
-          ))
-        ) : countries.length > 0 ? (
-          <p role='status'>No countries found.</p>
-        ) : null}
+      <div className='country-list' style={containerStyle}>
+        {filteredCountries.map((country) => (
+          <div className='countryCard country-card' key={country.common}>
+            <img className='country-flag' src={country.png} alt={`${country.common} flag`} />
+            <h2>{country.common}</h2>
+          </div>
+        ))}
       </div>
     </>
   )
