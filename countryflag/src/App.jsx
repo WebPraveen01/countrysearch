@@ -1,0 +1,54 @@
+import { useEffect, useState } from 'react'
+import heroImg from './assets/hero.png'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import './App.css'
+
+function App() {
+  const [countries, setCountries] = useState([])
+  const [search, setSearch] = useState('')
+  
+  const performSearch = countries.filter((country) =>
+    country.common.toLowerCase().includes(search.trim().toLowerCase()),
+  )
+
+  useEffect(()=>{
+    fetch("https://countries-search-data-prod-812920491762.asia-south1.run.app/countries")
+    .then((response)=>{
+      if(!response.ok){
+        throw new Error(`API request failed with status ${response.status}`)
+      }
+        return response.json()
+        .then((data)=>{
+          setCountries(data)
+        }).catch((error)=>{
+            console.log('Error fetching data:', error)
+        })
+    })
+  },[])
+  const containerStyle ={
+    display:"flex",
+    flexWrap:"wrap",
+    justifyContent:"center",
+    gap:"20px",
+    padding:"20px"
+
+  }
+
+  return (
+    <>
+    <h1>Country wise flag and name</h1>
+    <input type='text' value={search} onChange={(event) => setSearch(event.target.value)} placeholder='Enter the country name'/>
+      <div className='countryCard' style={containerStyle}>
+        {performSearch.map((country) => (
+          <div className='country-card' key={country.common}>
+            <img className='country-flag' src={country.png} alt={`${country.common} flag`} />
+            <h2>{country.common}</h2>
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}
+
+export default App
