@@ -17,7 +17,7 @@ function App() {
     const request = new XMLHttpRequest()
     request.open(
       'GET',
-      'https://xcountries-backend.labs.crio.do/all',
+      'https://countries-search-data-prod-812920491762.asia-south1.run.app/countries',
     )
     request.responseType = 'json'
     request.onload = () => {
