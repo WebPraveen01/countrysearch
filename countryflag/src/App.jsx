@@ -14,15 +14,24 @@ function App() {
   )
 
   useEffect(() => {
-    fetch('https://countries-search-data-prod-812920491762.asia-south1.run.app/countries')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`API request failed with status ${response.status}`)
-        }
-        return response.json()
-      })
-      .then((data) => setCountries(data))
-      .catch((error) => console.error('Error fetching data:', error))
+    const request = new XMLHttpRequest()
+    request.open(
+      'GET',
+      'https://countries-search-data-prod-812920491762.asia-south1.run.app/countries',
+    )
+    request.responseType = 'json'
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 300 && Array.isArray(request.response)) {
+        setCountries(request.response)
+      } else {
+        console.error(
+          'Error fetching data:',
+          new Error(`API request failed with status ${request.status}`),
+        )
+      }
+    }
+    request.onerror = () => console.error('Error fetching data:', new Error('Network request failed'))
+    request.send()
   }, [])
   const containerStyle ={
     display:"flex",
